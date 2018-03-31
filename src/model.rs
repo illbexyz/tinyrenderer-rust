@@ -1,6 +1,6 @@
 use std::io::{BufReader, BufRead};
 use std::fs::File;
-use utils::Vec3f;
+use vec::Vec3;
 
 // impl<i32> fmt::Display for Vec3<i32> {
 //     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -9,18 +9,18 @@ use utils::Vec3f;
 // }
 
 pub struct Model {
-    pub verts: Vec<Vec3f>,
+    pub verts: Vec<Vec3<f64>>,
     pub faces: Vec<Vec<i32>>
 }
 
 impl Model {
-    fn new(verts: Vec<Vec3f>, faces: Vec<Vec<i32>>) -> Model {
+    fn new(verts: Vec<Vec3<f64>>, faces: Vec<Vec<i32>>) -> Model {
         Model { verts, faces }
     }
 
     pub fn from_file(filename: &str) -> Model {
         let file = File::open(filename).expect("File not found");
-        let mut verts: Vec<Vec3f> = vec![];
+        let mut verts: Vec<Vec3<f64>> = vec![];
         let mut faces: Vec<Vec<i32>> = vec![];
 
         for line in BufReader::new(file).lines() {
@@ -28,7 +28,7 @@ impl Model {
             let line_tokens: Vec<&str> = l.split(' ').collect();
             if line_tokens[0] == "v" {
                 verts.push(
-                    Vec3f::new(
+                    Vec3::new(
                         line_tokens[1].parse().unwrap(),
                         line_tokens[2].parse().unwrap(),
                         line_tokens[3].parse().unwrap()
